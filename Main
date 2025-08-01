@@ -24,7 +24,7 @@ local treasure = Vector3.new(-60.73, -348.92, 9495.40)
 local Window = Rayfield:CreateWindow({
 	Name = "OnionScripts - Build A Boat AutoFarm",
 	LoadingTitle = "OnionScripts",
-	LoadingSubtitle = "Early Acces dub",
+	LoadingSubtitle = "Fixed idiot bugs",
 	ConfigurationSaving = {
 		Enabled = true,
 		FolderName = "OnionScripts",
@@ -38,14 +38,14 @@ local configTab = Window:CreateTab("Config", 4483362458)
 
 farmTab:CreateParagraph({
 	Title = "INFO",
-	Content = "Farms gold and checkpoints\nAlso the display doenst work yet."
+	Content = "Teleports through stages and farms gold.\nResets when chest kills you."
 })
 
 local runsText = farmTab:CreateParagraph({Title = "Rundy ukończone", Content = "0"})
 local goldText = farmTab:CreateParagraph({Title = "Szacowany Gold", Content = "0"})
 
 farmTab:CreateToggle({
-	Name = "Turn off / Turn On",
+	Name = "Turn ON/OFF Autofarm",
 	CurrentValue = false,
 	Flag = "AutoFarmToggle",
 	Callback = function(Value)
@@ -54,7 +54,7 @@ farmTab:CreateToggle({
 })
 
 configTab:CreateSlider({
-	Name = "Delay through checkpoints ",
+	Name = "Delay through checkpoints",
 	Range = {1, 10},
 	Increment = 1,
 	Suffix = "s",
@@ -67,59 +67,73 @@ configTab:CreateSlider({
 
 configTab:CreateParagraph({
 	Title = "WARNING",
-	Content = "Please set the delay good for your wifi, if its bad and low delay then you will get low gold\nDepends on your wifi!"
+	Content = "Low delay = less gold.\nDepends on ping & wifi."
 })
 
--- Autofarm loop
-task.spawn(function()
-	local Players = game:GetService("Players")
-	local player = Players.LocalPlayer
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
 
+-- Died detection
+local died = false
+local function SetupDeathDetection()
+	local char = player.Character or player.CharacterAdded:Wait()
+	local hum = char:WaitForChild("Humanoid")
+
+	died = false
+	hum.Died:Connect(function()
+		died = true
+	end)
+end
+
+-- Gold counter updater
+local function UpdateStats()
+	runsText:Set({Title = "Rundy ukończone", Content = tostring(totalRuns)})
+	goldText:Set({Title = "Szacowany Gold", Content = tostring(totalGold)})
+end
+
+-- Autofarm main loop
+task.spawn(function()
 	while true do
 		if autofarmEnabled then
 			local char = player.Character or player.CharacterAdded:Wait()
 			local root = char:WaitForChild("HumanoidRootPart")
-			local humanoid = char:WaitForChild("Humanoid")
 
-			-- Track śmierci
-			local died = false
-			humanoid.Died:Connect(function()
-				died = true
-			end)
+			SetupDeathDetection()
 
 			for _, pos in ipairs(stages) do
 				if not autofarmEnabled then break end
 				root.Anchored = false
 				root.CFrame = CFrame.new(pos + Vector3.new(0, 5, 0))
-				task.wait(0.2)
+				task.wait(0.25)
 				root.Anchored = true
 				task.wait(delayBetweenStages)
 			end
 
-			if not autofarmEnabled then continue end
+			if not autofarmEnabled then
+				task.wait(1)
+				continue
+			end
 
-			-- Teleport na skrzynię
+			-- Skrzynka teleport
 			root.Anchored = false
-			root.CFrame = CFrame.new(treasure + Vector3.new(0, 10, 0))
+			root.CFrame = CFrame.new(treasure + Vector3.new(0, 5, 0))
 			task.wait(0.5)
 			root.Anchored = true
 
-			-- Czekamy max 15s, aż gra nas zabije i zaliczy
-			local t = 0
-			while t < 15 and not died do
+			-- Oczekiwanie na śmierć
+			local timer = 0
+			while timer < 15 and not died do
 				if not autofarmEnabled then break end
 				task.wait(1)
-				t += 1
+				timer += 1
 			end
 
-			-- Jeśli zginął, to zaliczamy rundę
 			if died then
 				totalRuns += 1
 				local earnedGold = 50 + math.random(10, 35)
 				totalGold += earnedGold
 
-				runsText:Set({Content = tostring(totalRuns)})
-				goldText:Set({Content = tostring(totalGold)})
+				UpdateStats()
 
 				game.StarterGui:SetCore("ChatMakeSystemMessage", {
 					Text = "[OnionScripts] Runda #" .. totalRuns .. " zakończona (+ " .. earnedGold .. " golda)",
@@ -129,8 +143,7 @@ task.spawn(function()
 				})
 			end
 
-			-- Czekamy na respawn
-			task.wait(6)
+			task.wait(6) -- czas na respawn
 		else
 			task.wait(1)
 		end
