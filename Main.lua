@@ -6,15 +6,15 @@ local totalRuns = 0
 local totalGold = 0
 
 local stages = {
-	Vector3.new(-69.88, 50, 1371.00),    -- STAGE 1
-	Vector3.new(-45.50, 55, 2133.89),    -- STAGE 2
+	Vector3.new(-69.88, 60, 1371.00),    -- STAGE 1
+	Vector3.new(-45.50, 60, 2133.89),    -- STAGE 2
 	Vector3.new(-43.02, 60, 2907.28),    -- STAGE 3
-	Vector3.new(-57.43, 65, 3679.27),    -- STAGE 4
-	Vector3.new(-39.82, 70, 4451.44),    -- STAGE 5a
-	Vector3.new(-19.72, 75, 5222.60),    -- STAGE 5b
-	Vector3.new(-3.54, 80, 5985.04),     -- STAGE 6
-	Vector3.new(1.23, 85, 6758.04),      -- STAGE 7
-	Vector3.new(-23.42, 90, 7531.34),    -- STAGE 8
+	Vector3.new(-57.43, 60, 3679.27),    -- STAGE 4
+	Vector3.new(-39.82, 60, 4451.44),    -- STAGE 5a
+	Vector3.new(-19.72, 60, 5222.60),    -- STAGE 5b
+	Vector3.new(-3.54, 60, 5985.04),     -- STAGE 6
+	Vector3.new(1.23, 60, 6758.04),      -- STAGE 7
+	Vector3.new(-23.42, 60, 7531.34),    -- STAGE 8
 }
 
 local treasure = Vector3.new(-60.73, -348.92, 9495.40)
