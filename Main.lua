@@ -1,4 +1,4 @@
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))(
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local delayBetweenStages = 2
 local autofarmEnabled = false
@@ -15,7 +15,7 @@ local stages = {
 	Vector3.new(-3.54, 80, 5985.04),     -- STAGE 6
 	Vector3.new(1.23, 85, 6758.04),      -- STAGE 7
 	Vector3.new(-23.42, 90, 7531.34),    -- STAGE 8
-	}
+}
 
 local treasure = Vector3.new(-60.73, -348.92, 9495.40)
 
