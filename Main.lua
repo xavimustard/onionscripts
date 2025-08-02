@@ -18,7 +18,7 @@ local stages = {
 	Vector3.new(-23.42, 69.45, 7531.34),  -- Stage 9
 }
 
-local treasure = Vector3.new(-60.73, -348.92, 9495.40)
+local treasure = Vector3.new(-60.73, -338.9, 9495.40)
 
 local TeamsCoords = {
 	["Yellow"] = Vector3.new(-474.52, -9.93, 639.84),
