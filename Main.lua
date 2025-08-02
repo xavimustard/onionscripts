@@ -18,10 +18,20 @@ local stages = {
 
 local treasure = Vector3.new(-60.73, -348.92, 9495.40)
 
+local TeamsCoords = {
+	["Yellow"] = Vector3.new(-474.52, -9.93, 639.84),
+	["Magenta"] = Vector3.new(365.70, -9.93, 647.55),
+	["Blue"] = Vector3.new(373.35, -9.73, 303.35),
+	["Green"] = Vector3.new(-483.60, -9.73, 292.25),
+	["Black"] = Vector3.new(-484.37, -9.73, -69.36),
+	["Red"] = Vector3.new(372.12, -9.73, -65.49),
+	["White"] = Vector3.new(-51.78, -9.73, -502.33),
+}
+
 local Window = Rayfield:CreateWindow({
 	Name = "OnionScripts - Build A Boat AutoFarm",
 	LoadingTitle = "OnionScripts",
-	LoadingSubtitle = "Fixed idiot bugs",
+	LoadingSubtitle = "Fixed idiot bugs + troll shit",
 	ConfigurationSaving = {
 		Enabled = true,
 		FolderName = "OnionScripts",
@@ -30,8 +40,10 @@ local Window = Rayfield:CreateWindow({
 	KeySystem = false,
 })
 
+-- AutoFarm tab
 local farmTab = Window:CreateTab("AutoFarm", 4483362458)
 local configTab = Window:CreateTab("Config", 4483362458)
+local trollTab = Window:CreateTab("Troll", 4483362458) -- nowa zakładka Troll
 
 farmTab:CreateParagraph({
 	Title = "INFO",
@@ -146,3 +158,44 @@ task.spawn(function()
 		end
 	end
 end)
+
+-- ========== TROLL TAB ==========
+
+local bypassIsolation = false
+local selectedTeam = "Black"
+
+trollTab:CreateToggle({
+	Name = "Bypass Isolation Mode",
+	CurrentValue = false,
+	Flag = "BypassIsolationToggle",
+	Callback = function(value)
+		bypassIsolation = value
+		-- Tu możesz wrzucić logikę bypassu izolacji jeśli wiesz jak to działa w grze
+		-- np. manipulacja serwerem albo jakieś gówno
+	end,
+})
+
+local teamDropdown = trollTab:CreateDropdown({
+	Name = "Select Team",
+	Options = {"Yellow", "Magenta", "Blue", "Green", "Black", "Red", "White"},
+	CurrentOption = "Black",
+	Flag = "TeamDropdown",
+	Callback = function(option)
+		selectedTeam = option
+	end,
+})
+
+trollTab:CreateButton({
+	Name = "Teleport to Team",
+	Callback = function()
+		local char = player.Character or player.CharacterAdded:Wait()
+		local root = char:WaitForChild("HumanoidRootPart")
+
+		local teamPos = TeamsCoords[selectedTeam]
+		if teamPos then
+			root.CFrame = CFrame.new(teamPos + Vector3.new(0, 5, 0))
+		else
+			warn("Team position not found!")
+		end
+	end,
+})
