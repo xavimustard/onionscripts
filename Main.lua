@@ -2,24 +2,22 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local delayBetweenStages = 2
 local autofarmEnabled = false
-local totalRuns = 0
-local totalGold = 0
+local totalRuns = 0 
 
 local stages = {
-	Vector3.new(-69.88, 60, 1371.00),    -- STAGE 1
-	Vector3.new(-45.50, 60, 2133.89),    -- STAGE 2
-	Vector3.new(-43.02, 60, 2907.28),    -- STAGE 3
-	Vector3.new(-57.43, 60, 3679.27),    -- STAGE 4
-	Vector3.new(-39.82, 60, 4451.44),    -- STAGE 5a
-	Vector3.new(-19.72, 60, 5222.60),    -- STAGE 5b
-	Vector3.new(-3.54, 60, 5985.04),     -- STAGE 6
-	Vector3.new(1.23, 60, 6758.04),      -- STAGE 7
-	Vector3.new(-23.42, 60, 7531.34),    -- STAGE 8
+	Vector3.new(-69.88, 39.94, 1371.00),  -- Stage 1
+	Vector3.new(-45.50, 35.61, 2133.89),  -- Stage 2
+	Vector3.new(-43.02, 59.40, 2907.28),  -- Stage 3
+	Vector3.new(-57.43, 60.20, 3679.27),  -- Stage 4 (was low)
+	Vector3.new(-39.82, 50.38, 4451.44),  -- Stage 5 (was low)
+	Vector3.new(-19.72, 52.05, 5222.60),  -- Stage 6 (was low)
+	Vector3.new(-3.54, 47.49, 5985.04),   -- Stage 7
+	Vector3.new(1.23, 45.74, 6758.04),    -- Stage 8
+	Vector3.new(-23.42, 69.45, 7531.34),  -- Stage 9
 }
 
 local treasure = Vector3.new(-60.73, -348.92, 9495.40)
 
--- GUI
 local Window = Rayfield:CreateWindow({
 	Name = "OnionScripts - Build A Boat AutoFarm",
 	LoadingTitle = "OnionScripts",
